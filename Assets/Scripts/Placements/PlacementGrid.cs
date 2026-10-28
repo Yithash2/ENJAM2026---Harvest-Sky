@@ -19,13 +19,17 @@ namespace Placements
          public bool PlaceObject(PlacementObject obj)
          {
              if (!InBound(obj.transform.position))
+             {
+                 Debug.Log("1");
                  return false;
+             }
 
              int i = (int)((int)(obj.transform.position.x - Bound1.x) / SnapAmount);
              int j = (int)((int)(obj.transform.position.x - Bound1.x) / SnapAmount);
 
              if (!_grid[i, j].Usable)
              {
+                 Debug.Log("2");
                  return false;
              }
 
@@ -39,7 +43,10 @@ namespace Placements
                      if (InBound(i-w, j-h) && (w != 0 && h != 0))
                      {
                          if (!_grid[i - w, j - h].Usable)
+                         {
+                             Debug.Log("3");
                              return false;
+                         }
                          
                          _grid[i - w, j - h].Blocked = true;
                          PlaceUsed.Add(_grid[i - w, j - h]);
