@@ -17,7 +17,8 @@ namespace Placements
 
         public void Place()
         {
-            PlacementManager.Instance.grid.PlaceObject(this);
+            bool b = PlacementManager.Instance.grid.PlaceObject(this);
+            Debug.Log(b);
         }
     }
 }
