@@ -23,9 +23,15 @@ namespace Placements
                  return false;
              }
              
-             bool b = ValidObjectDirectPlacement(obj,out List<Node> placeUsed);
+             int layer = ValidObjectDirectPlacement(obj,out List<Node> placeUsed, out int numberOfOccupiedNodeHitOnTheSameLayer);
 
-             if (!b) return false;
+             if (layer < 0) return false;
+             
+             if (numberOfOccupiedNodeHitOnTheSameLayer < (obj.TotalNbrOfNode/2f))
+                 obj.BadSupport = true;
+             
+             obj.layerPlaced = layer;
+            
              
              obj.PlacesUsed = placeUsed;
              foreach (var node in placeUsed)
@@ -38,21 +44,21 @@ namespace Placements
              return true;
          }
 
-         public bool ValidObjectDirectPlacement(PlacementObject obj,out List<Node> placesUsed)
+         public int ValidObjectDirectPlacement(PlacementObject obj,out List<Node> placesUsed, out int numberOfOccupiedNodeHitOnTheSameLayer)
          {
              placesUsed = new List<Node>();
              
              var min = obj.collider.bounds.min;
              var max = obj.collider.bounds.max;
 
-             var minIndex = WorldToGridIndex(min);
+             var minIndex = WorldToGridIndex(min, true);
              var maxIndex = WorldToGridIndex(new Vector3(
                  max.x - 1f * SnapAmount,
                  max.y,
                  max.z - 1f * SnapAmount
-             ));
+             ), true);
 
-             int numberOfOccupiedNodeHitOnTheSameLayer = 0;
+             numberOfOccupiedNodeHitOnTheSameLayer = 0;
              int layer = 0;
              
              for(int i = minIndex.x; i <= maxIndex.x; i++)
@@ -84,17 +90,14 @@ namespace Placements
                  }
              }
          
-             if (numberOfOccupiedNodeHitOnTheSameLayer >= obj.totalNbrOfNode/4f)
+             if (numberOfOccupiedNodeHitOnTheSameLayer >= obj.TotalNbrOfNode/4f)
              {
-                 obj.layerPlaced = layer;
-                 if (numberOfOccupiedNodeHitOnTheSameLayer < (obj.totalNbrOfNode/2f))
-                     obj.BadSupport = true;
-                 return true;
+                 return layer;
              }
              else
              {
                  placesUsed = new List<Node>();
-                 return false;
+                 return -1;
              }
              
          }
@@ -105,10 +108,22 @@ namespace Placements
              return centerOfFirst + new Vector2(i, j) * SnapAmount;
          }
 
-         public Vector2Int WorldToGridIndex(Vector3 worldPos)
+         public float LayerToWorld(int layer)
+         {
+             return transform.position.y + (SnapAmount * layer);
+         }
+
+         public Vector2Int WorldToGridIndex(Vector3 worldPos, bool correct = false)
          {
              int i = Mathf.Abs(Mathf.FloorToInt((worldPos.x - Bound1.x) / SnapAmount));
              int j = Mathf.Abs(Mathf.FloorToInt((worldPos.z - Bound1.y) / SnapAmount));
+
+             if (correct)
+             {
+                 i = 0 > i ? 0 : i > size.x ? size.x : i;
+                 j = 0 > j ? 0 : j > size.y ? size.y : j;
+             }
+             
              return new Vector2Int(i, j);
          }
          
