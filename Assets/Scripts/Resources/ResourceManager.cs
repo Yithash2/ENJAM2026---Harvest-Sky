@@ -10,7 +10,7 @@ public class ResourceManager : MonoBehaviour
     {
         if (Instance != this && Instance != null)
         {
-            Destroy(this.gameObject);
+            Destroy(gameObject);
         }
 
         Instance = this;
