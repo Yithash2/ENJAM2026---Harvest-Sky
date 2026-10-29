@@ -15,7 +15,7 @@ namespace Placements
 
          [SerializeField]private Node[,] _grid;
 
-         private List<PlacementObject> ObjectsOnGrid;
+         public GameObject prefab;
 
          public bool PlaceObject(PlacementObject obj)
          {
@@ -38,7 +38,7 @@ namespace Placements
              {
                  node.Objects.Add(obj);
              }
-             ObjectsOnGrid.Add(obj);
+             PlacementManager.Instance.BuildingsInCiv.Add(obj);
              return true;
          }
 
@@ -129,16 +129,21 @@ namespace Placements
              return 0 < x && size.x > x && 0 < y && size.y > y;
          }
 
-         public Tuple<Vector2Int,Node> FindRdmNodeInView() // Trouve une case au hasard qui regarde le ciel
+         public Tuple<Vector3,Node> FindRdmNodeInView() // Trouve une case au hasard qui regarde le ciel
          {
-             List<Tuple<Vector2Int,Node>> usable = new List<Tuple<Vector2Int,Node>>();
-
-             int i = 0;
-             int j = 0;
-             foreach (var node in _grid)
+             List<Tuple<Vector3,Node>> valid = new List<Tuple<Vector3,Node>>();
+             
+             for (int i = 0; i < size.x;i++)
+             for (int j = 0; j < size.y; j++)
              {
-                 if(node.Occupied && !node.Objects[^1].IsRuined) continue;
-                 usable.Add(new Tuple<Vector2Int, Node>(new Vector2Int(i,j),node));
+                 if(_grid[i,j].Blocked || (_grid[i,j].Occupied && !_grid[i,j].Objects[^1].IsRuined)) continue;
+                
+                 var v = GridToWorld(i, j);
+                 var v3 = new Vector3(v.x, _grid[i,j].Occupied ? _grid[i,j].Objects[^1].transform.position.y+_grid[i,j].Objects[^1].child.transform.localScale.y : -14.5f, v.y);
+                 if (CheckNodeExteriorView(_grid[i,j], v3))
+                 {
+                     valid.Add(new Tuple<Vector3,Node>(v3, _grid[i,j]));
+                 }
 
                  j++;
                  if (j >= size.y)
@@ -148,15 +153,12 @@ namespace Placements
                  }
              }
 
-             List<Tuple<Vector2Int,Node>> valid = new List<Tuple<Vector2Int,Node>>();
-             foreach (var node in usable)
+             if (valid.Count == 0)
              {
-                 if (CheckNodeExteriorView(node.Item2, GridToWorld(node.Item1.x, node.Item1.y)))
-                 {
-                     valid.Add(node);
-                 }
+                 return new Tuple<Vector3, Node>(Vector3.zero, new Node());
              }
-
+            
+             print(valid.Count);
              int rdm = Random.Range(0, valid.Count - 1);
 
              return valid[rdm];
@@ -164,17 +166,29 @@ namespace Placements
 
          public bool CheckNodeExteriorView(Node node, Vector3 position)
          {
-             /*Physics.Raycast(position, Vector3.forward, 30);
-             Physics.Raycast(position, Vector3.right, 30);
-             Physics.Raycast(position, -Vector3.forward, 30);
-             Physics.Raycast(position, -Vector3.right, 30);*/
+             bool b = Physics.Raycast(position, new Vector3(Mathf.Cos(Mathf.PI/6f), Mathf.Sin(Mathf.PI/6f), 0), 30, PlacementManager.Instance.PlaceLayer.value);
+             Debug.DrawRay(position,new Vector3(Mathf.Cos(Mathf.PI/6f), Mathf.Sin(Mathf.PI/6f), 0));
              
-             bool b = Physics.Raycast(position, new Vector3(Mathf.Cos(Mathf.PI/6f), Mathf.Sin(Mathf.PI/6f), 0), 30);
-             b = b||Physics.Raycast(position, new Vector3(0, Mathf.Sin(Mathf.PI/6f), Mathf.Cos(Mathf.PI/6f)), 30);
-             b=b||Physics.Raycast(position, new Vector3(-Mathf.Cos(Mathf.PI/6f), Mathf.Sin(Mathf.PI/6f), 0), 30);
-             b=b||Physics.Raycast(position, new Vector3(0, Mathf.Sin(Mathf.PI/6f), -Mathf.Cos(Mathf.PI/6f)), 30);
+             b = b||Physics.Raycast(position, new Vector3(0, Mathf.Sin(Mathf.PI/6f), Mathf.Cos(Mathf.PI/6f)), 30, PlacementManager.Instance.PlaceLayer.value);
+             Debug.DrawRay(position,new Vector3(0, Mathf.Sin(Mathf.PI/6f), Mathf.Cos(Mathf.PI/6f)));
+             
+             b=b||Physics.Raycast(position, new Vector3(-Mathf.Cos(Mathf.PI/6f), Mathf.Sin(Mathf.PI/6f), 0), 30, PlacementManager.Instance.PlaceLayer.value);
+             Debug.DrawRay(position,new Vector3(-Mathf.Cos(Mathf.PI/6f), Mathf.Sin(Mathf.PI/6f), 0));
+             
+             b=b||Physics.Raycast(position, new Vector3(0, Mathf.Sin(Mathf.PI/6f), -Mathf.Cos(Mathf.PI/6f)), 30, PlacementManager.Instance.PlaceLayer.value);
+             Debug.DrawRay(position,new Vector3(0, Mathf.Sin(Mathf.PI/6f), -Mathf.Cos(Mathf.PI/6f)));
 
+             Debug.Break();
              return b;
+         }
+
+         [ContextMenu("Spawn Relik")]
+         public void SpawnRelik()
+         {
+             var r = FindRdmNodeInView();
+             
+             Instantiate(prefab, r.Item1, Quaternion.identity);
+             r.Item2.Blocked = true;
          }
          
          private void OnValidate()
@@ -185,7 +199,7 @@ namespace Placements
              for(int h = 0; h<size.x; h++)
                  for(int w = 0; w<size.y; w++)
                      _grid[h,w] = new Node();
-             ObjectsOnGrid = new List<PlacementObject>();
+             
          }
 
          private void OnDrawGizmos()

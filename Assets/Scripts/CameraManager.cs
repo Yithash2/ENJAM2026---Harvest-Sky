@@ -15,6 +15,7 @@ public class CameraManager : MonoBehaviour
 
     private bool _isMovingCam;
     private float _minHeight;
+    
 
     private void OnEnable()
     {
