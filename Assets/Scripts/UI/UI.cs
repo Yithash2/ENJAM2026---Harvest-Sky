@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Timers;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,8 +22,8 @@ public class UI : MonoBehaviour
     [SerializeField] private AnimationCurve BuildMenuOppeningCurve;
     [SerializeField] private float BuildMenuOppeningTime;
     private float BuildMenuOppeningTimer;
-    private bool BuildMenuOppening;
-    private Coroutine BuildMenuCoroutine;
+    private bool BuildMenuOppened;
+    private bool BuildMenuMoving = false;
     
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -35,7 +36,7 @@ public class UI : MonoBehaviour
         }
 
         NextButton.onClick.AddListener(OnNextCivilisationButtonPressed);
-        NextButton.onClick.AddListener(OnBuildButtonPressed);
+        BuildMenuButton.onClick.AddListener(OnBuildButtonPressed);
         
         LoreText.color = new Color(LoreText.color.r, LoreText.color.g, LoreText.color.b, 0);
         LorePanel.color = new Color(LorePanel.color.r, LorePanel.color.g, LorePanel.color.b, 0);
@@ -54,30 +55,47 @@ public class UI : MonoBehaviour
     
     public void OnBuildButtonPressed()
     {
-        print("Oppening Panel !");
-        BuildMenuOppening = !BuildMenuOppening;
-        BuildMenuCoroutine = StartCoroutine(OpenBuildPanel());
+        BuildMenuOppeningTimer = 0f;
+        if (BuildMenuMoving) return;
+        print("Button pressed");
+        if (BuildMenuOppened)
+        {
+            BuildMenuOppened = false;
+            StartCoroutine(CloseBuildPanel());
+        }
+        else
+        {
+            BuildMenuOppened = true;
+            StartCoroutine(OpenBuildPanel());
+        }
+        
     }
 
     public IEnumerator OpenBuildPanel()
     {
+        BuildMenuMoving = true;
         Vector3 newPos;
-        if (BuildMenuOppening)
+        while (BuildMenuOppeningTimer < BuildMenuOppeningTime)
         {
             BuildMenuOppeningTimer += Time.deltaTime;
             newPos = Vector3.Lerp(BuildMenuClose, BuildMenuOpen, BuildMenuOppeningCurve.Evaluate(BuildMenuOppeningTimer/BuildMenuOppeningTime));
-            
+            BuildMenu.transform.localPosition = newPos;
+            yield return null;
         }
-        else
+        BuildMenuMoving = false;
+    }
+    
+    public IEnumerator CloseBuildPanel()
+    {
+        BuildMenuMoving = true;
+        Vector3 newPos;
+        while (BuildMenuOppeningTimer < BuildMenuOppeningTime)
         {
-            BuildMenuOppeningTimer -= Time.deltaTime;
-            newPos = Vector3.Lerp(BuildMenuClose, BuildMenuOpen, BuildMenuOppeningCurve.Evaluate(BuildMenuOppeningTimer/BuildMenuOppeningTime));
+            BuildMenuOppeningTimer += Time.deltaTime;
+            newPos = Vector3.Lerp(BuildMenuOpen, BuildMenuClose, BuildMenuOppeningCurve.Evaluate(BuildMenuOppeningTimer/BuildMenuOppeningTime));
+            BuildMenu.transform.localPosition = newPos;
+            yield return null;
         }
-        
-        BuildMenu.transform.position = newPos;
-        if (BuildMenuOppeningTimer > BuildMenuOppeningTime || BuildMenuOppeningTimer < 0)
-            StopCoroutine(BuildMenuCoroutine);
-        else
-            yield break;
+        BuildMenuMoving = false;
     }
 }
