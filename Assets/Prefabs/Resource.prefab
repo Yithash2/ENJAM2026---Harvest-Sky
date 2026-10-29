@@ -127,9 +127,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Resource
   _test: 0
-  HasResources: 0
-  ResourcesGiven: 20
-  _timeToWait: 15
+  ID: 0
+  _timeToWait: 3
   _animator: {fileID: 7529374700755335433}
   _text: {fileID: 193585877441017543}
 --- !u!1 &5282190613573732821
@@ -381,7 +380,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 625c5b67eac1b2d31b34b658c9f8dd3a, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
