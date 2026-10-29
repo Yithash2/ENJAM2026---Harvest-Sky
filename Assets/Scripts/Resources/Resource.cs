@@ -12,12 +12,12 @@ public class Resource : MonoBehaviour
     public int ResourcesGiven;
     [SerializeField] private float _timeToWait;
     [Header("References")]
-    [SerializeField] private GameObject _resourceDisplay;
+    [SerializeField] private Animator _animator;
     [SerializeField] private TMP_Text _text;
 
     void Start()
     {
-        _text.text = ResourcesGiven.ToString();
+        _text.text = "-" + ResourcesGiven.ToString();
         HasResources = true;
     }
 
@@ -25,7 +25,6 @@ public class Resource : MonoBehaviour
     {
         yield return new WaitForSeconds(_timeToWait);
         HasResources = true;
-        _resourceDisplay.SetActive(true);
     }
 
     public void OnClick()
@@ -34,7 +33,7 @@ public class Resource : MonoBehaviour
         {
             ResourceManager.Instance.AddResources(ResourcesGiven);
             HasResources = false;
-            _resourceDisplay.SetActive(false);
+            _animator.SetTrigger("Click");
             StartCoroutine(GatherResources());
         }
     }
@@ -44,7 +43,6 @@ public class Resource : MonoBehaviour
     {
         if (_test)
         {
-            print("Click !");
             _test = false;
             OnClick();
         }
