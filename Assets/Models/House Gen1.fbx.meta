@@ -8,57 +8,57 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: clay
-    second: {fileID: 2100000, guid: 75bfb076a53c2a74399198bbf59ccde7, type: 2}
+    second: {fileID: 2100000, guid: ad9e609d1f15753449fe51223a578d59, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: dark_green
-    second: {fileID: 2100000, guid: 75bfb076a53c2a74399198bbf59ccde7, type: 2}
+    second: {fileID: 2100000, guid: ad9e609d1f15753449fe51223a578d59, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: floor
-    second: {fileID: 2100000, guid: 75bfb076a53c2a74399198bbf59ccde7, type: 2}
+    second: {fileID: 2100000, guid: 44fbb05baf6ac234888625cc351e253a, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: flower_petals
-    second: {fileID: 2100000, guid: 75bfb076a53c2a74399198bbf59ccde7, type: 2}
+    second: {fileID: 2100000, guid: ad9e609d1f15753449fe51223a578d59, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: glass
-    second: {fileID: 2100000, guid: 75bfb076a53c2a74399198bbf59ccde7, type: 2}
+    second: {fileID: 2100000, guid: 44fbb05baf6ac234888625cc351e253a, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: light_green
-    second: {fileID: 2100000, guid: 75bfb076a53c2a74399198bbf59ccde7, type: 2}
+    second: {fileID: 2100000, guid: 44fbb05baf6ac234888625cc351e253a, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: metal
-    second: {fileID: 2100000, guid: 3989ca97385b565478086c8a6cc2c7a7, type: 2}
+    second: {fileID: 2100000, guid: ad9e609d1f15753449fe51223a578d59, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: roof
-    second: {fileID: 2100000, guid: 3989ca97385b565478086c8a6cc2c7a7, type: 2}
+    second: {fileID: 2100000, guid: ad9e609d1f15753449fe51223a578d59, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: rug
-    second: {fileID: 2100000, guid: 3989ca97385b565478086c8a6cc2c7a7, type: 2}
+    second: {fileID: 2100000, guid: ad9e609d1f15753449fe51223a578d59, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: wall
-    second: {fileID: 2100000, guid: 75bfb076a53c2a74399198bbf59ccde7, type: 2}
+    second: {fileID: 2100000, guid: 44fbb05baf6ac234888625cc351e253a, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: wood
-    second: {fileID: 2100000, guid: 3989ca97385b565478086c8a6cc2c7a7, type: 2}
+    second: {fileID: 2100000, guid: ad9e609d1f15753449fe51223a578d59, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

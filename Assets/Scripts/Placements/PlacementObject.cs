@@ -10,11 +10,25 @@ namespace Placements
         public bool Placed;
         
         public BoxCollider collider;
-        public List<Node> PlacesUsed;
 
         public int layerPlaced;
-        public bool SupportsOtherObjects = true;
+        public bool IsRuined = false;
         public bool BadSupport;
+
+        #region Generation
+
+        private GameObject child;
+        [SerializeField] private GameObject ruined;
+        [ContextMenu("GetRuined")]
+        public void GetRuined()
+        {
+            var go = Instantiate(ruined, transform);
+            collider = go.GetComponent<BoxCollider>();
+            IsRuined = true;
+            DestroyImmediate(child, true);
+        }
+
+        #endregion
         
         public int TotalNbrOfNode { get; private set; }
 
@@ -34,8 +48,8 @@ namespace Placements
 
         private void OnValidate()
         {
-            collider = GetComponent<BoxCollider>();
-            
+            collider = collider?? GetComponent<BoxCollider>();
+            child = transform.GetChild(0).gameObject;
         }
 
         private void FixedUpdate()
@@ -55,14 +69,16 @@ namespace Placements
                     transform.position = new Vector3(gridCoord.x, 12f, gridCoord.y);
                     int layer = PlacementManager.Instance.grid.ValidObjectDirectPlacement(this, out List<Node> unused, out var _);
 
+                    Physics.Raycast(transform.position,Vector3.down,out var info, 20000f,
+                        PlacementManager.Instance.PlaceLayer.value);
                     if (layer < 0)
                     {
-                        
+                        transform.position = new Vector3(gridCoord.x, info.point.y + 3f, gridCoord.y);
                     }
                     else
                     {
-
-                        transform.position = new Vector3(gridCoord.x, _grid.LayerToWorld(layer), gridCoord.y);
+                        
+                        transform.position = new Vector3(gridCoord.x, info.point.y, gridCoord.y);
 
                         if (PlacementManager.Instance.Clicked)
                         {
@@ -74,9 +90,7 @@ namespace Placements
                 
             }
         }
-
-
-        [ContextMenu("Place")]
+        
         public void Place()
         {
             bool hasBeenPlaced = PlacementManager.Instance.grid.PlaceObject(this);
@@ -112,7 +126,7 @@ namespace Placements
             
             if (hit)
             {
-                if (ray.distance <= 0.051f)
+                if (ray.distance <= 0.00051f)
                 {
                     DestroyImmediate(beamA);
                     return;

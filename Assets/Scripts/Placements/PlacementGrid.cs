@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 
 namespace Placements
@@ -31,14 +32,11 @@ namespace Placements
                  obj.BadSupport = true;
              
              obj.layerPlaced = layer;
-            
+             obj.gameObject.layer = PlacementManager.Instance.PlaceLayer.value;
              
-             obj.PlacesUsed = placeUsed;
              foreach (var node in placeUsed)
              {
-				print("fbbkbkbkbkbk");
                  node.Objects.Add(obj);
-                 print(node.Objects.Count);
              }
              ObjectsOnGrid.Add(obj);
              return true;
@@ -57,7 +55,6 @@ namespace Placements
                  max.y,
                  max.z - 1f * SnapAmount
              ), true);
-
              numberOfOccupiedNodeHitOnTheSameLayer = 0;
              int layer = 0;
              
@@ -68,17 +65,15 @@ namespace Placements
                  if (_grid[i, j].Occupied)//Si l'espace est occuper
                  {
                      
-                     if(_grid[i, j].Objects[^1].SupportsOtherObjects)
+                     if(_grid[i, j].Objects[^1].IsRuined)
                          if (_grid[i, j].Objects[^1].LayerOnTop() > layer)
                          {
-                             print($"{new Vector2Int(i,j)} : {_grid[i, j].Objects[^1].LayerOnTop()}");
                              layer = _grid[i, j].Objects[^1].LayerOnTop();
                              numberOfOccupiedNodeHitOnTheSameLayer = 1;
                              placesUsed = new List<Node>();
                          }
                          else if (_grid[i, j].Objects[^1].LayerOnTop() == layer)
                          {
-                             print($"{new Vector2Int(i,j)} : {numberOfOccupiedNodeHitOnTheSameLayer}");
                              numberOfOccupiedNodeHitOnTheSameLayer++;
                              placesUsed.Add(_grid[i, j]);
                          }
@@ -88,6 +83,8 @@ namespace Placements
                      numberOfOccupiedNodeHitOnTheSameLayer++;
                      placesUsed.Add(_grid[i, j]);
                  }
+                 
+                 Debug.DrawRay(GridToWorld(i,j), Vector3.up);
              }
          
              if (numberOfOccupiedNodeHitOnTheSameLayer >= obj.TotalNbrOfNode/4f)
@@ -108,11 +105,6 @@ namespace Placements
              return centerOfFirst + new Vector2(i, j) * SnapAmount;
          }
 
-         public float LayerToWorld(int layer)
-         {
-             return transform.position.y + (SnapAmount * layer);
-         }
-
          public Vector2Int WorldToGridIndex(Vector3 worldPos, bool correct = false)
          {
              int i = Mathf.Abs(Mathf.FloorToInt((worldPos.x - Bound1.x) / SnapAmount));
@@ -120,8 +112,8 @@ namespace Placements
 
              if (correct)
              {
-                 i = 0 > i ? 0 : i > size.x ? size.x : i;
-                 j = 0 > j ? 0 : j > size.y ? size.y : j;
+                 i = 0 > i ? 0 : i >= size.x ? size.x-1 : i;
+                 j = 0 > j ? 0 : j >= size.y ? size.y-1 : j;
              }
              
              return new Vector2Int(i, j);
@@ -135,6 +127,54 @@ namespace Placements
          private bool InBound(int x,int y)
          {
              return 0 < x && size.x > x && 0 < y && size.y > y;
+         }
+
+         public Tuple<Vector2Int,Node> FindRdmNodeInView() // Trouve une case au hasard qui regarde le ciel
+         {
+             List<Tuple<Vector2Int,Node>> usable = new List<Tuple<Vector2Int,Node>>();
+
+             int i = 0;
+             int j = 0;
+             foreach (var node in _grid)
+             {
+                 if(node.Occupied && !node.Objects[^1].IsRuined) continue;
+                 usable.Add(new Tuple<Vector2Int, Node>(new Vector2Int(i,j),node));
+
+                 j++;
+                 if (j >= size.y)
+                 {
+                     j = 0;
+                     i++;
+                 }
+             }
+
+             List<Tuple<Vector2Int,Node>> valid = new List<Tuple<Vector2Int,Node>>();
+             foreach (var node in usable)
+             {
+                 if (CheckNodeExteriorView(node.Item2, GridToWorld(node.Item1.x, node.Item1.y)))
+                 {
+                     valid.Add(node);
+                 }
+             }
+
+             int rdm = Random.Range(0, valid.Count - 1);
+
+             return valid[rdm];
+         }
+
+         public bool CheckNodeExteriorView(Node node, Vector3 position)
+         {
+             /*Physics.Raycast(position, Vector3.forward, 30);
+             Physics.Raycast(position, Vector3.right, 30);
+             Physics.Raycast(position, -Vector3.forward, 30);
+             Physics.Raycast(position, -Vector3.right, 30);*/
+             
+             bool b = Physics.Raycast(position, new Vector3(Mathf.Cos(Mathf.PI/6f), Mathf.Sin(Mathf.PI/6f), 0), 30);
+             b = b||Physics.Raycast(position, new Vector3(0, Mathf.Sin(Mathf.PI/6f), Mathf.Cos(Mathf.PI/6f)), 30);
+             b=b||Physics.Raycast(position, new Vector3(-Mathf.Cos(Mathf.PI/6f), Mathf.Sin(Mathf.PI/6f), 0), 30);
+             b=b||Physics.Raycast(position, new Vector3(0, Mathf.Sin(Mathf.PI/6f), -Mathf.Cos(Mathf.PI/6f)), 30);
+
+             return b;
          }
          
          private void OnValidate()
