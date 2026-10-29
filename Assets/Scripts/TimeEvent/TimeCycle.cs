@@ -54,6 +54,16 @@ public class TimeCycle : MonoBehaviour
         }
     }
 
+    public void TogglePause()
+    {
+        timeState = timeState == TimeState.Pause ? TimeState.Play : TimeState.Pause;
+    }
+    
+    public void ToggleFastForward()
+    {
+        timeState = timeState == TimeState.FastForward ? TimeState.Play : TimeState.FastForward;
+    }
+    
     #region Events
 
     public event Action OnDayFullCycle;
