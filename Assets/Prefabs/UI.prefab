@@ -342,9 +342,9 @@ MonoBehaviour:
   - {fileID: 5557945592403869375, guid: ea17b484d3f81c128aca95bffa4e7ae2, type: 3}
   - {fileID: 5557945592403869375, guid: ea17b484d3f81c128aca95bffa4e7ae2, type: 3}
   - {fileID: 5557945592403869375, guid: ea17b484d3f81c128aca95bffa4e7ae2, type: 3}
-  WidthBetweenBuildings: 150
-  BuildMenuOpen: {x: 0, y: 87.35, z: 0}
-  BuildMenuClose: {x: 0, y: -18.3, z: 0}
+  WidthBetweenBuildings: 70
+  BuildMenuOpen: {x: 0, y: -213.7, z: 0}
+  BuildMenuClose: {x: 0, y: -318.6, z: 0}
   BuildMenuOppeningCurve:
     serializedVersion: 2
     m_Curve:
@@ -369,7 +369,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  BuildMenuOppeningTime: 1
+  BuildMenuOppeningTime: 0.33
 --- !u!1 &4139480570248833266
 GameObject:
   m_ObjectHideFlags: 0
@@ -409,10 +409,10 @@ RectTransform:
   - {fileID: 3034000679819741649}
   m_Father: {fileID: 5607149022484911663}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: -18.6}
-  m_SizeDelta: {x: 0, y: 174.7006}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -318.6}
+  m_SizeDelta: {x: 0, y: 174.70062}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &2512274546524675954
 Canvas:
