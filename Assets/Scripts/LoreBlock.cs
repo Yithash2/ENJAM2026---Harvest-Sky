@@ -50,6 +50,7 @@ public class LoreBlock : MonoBehaviour
             if (b && hit.collider.gameObject == transform.gameObject)
             {
                 UI.Instance.ShowLore(MemoriesManager.Instance.LoreTexts[key]);
+                SoundManager.Instance.LoreSound();
             }
         }
         

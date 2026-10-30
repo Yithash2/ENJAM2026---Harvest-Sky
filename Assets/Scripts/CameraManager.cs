@@ -42,7 +42,7 @@ public class CameraManager : MonoBehaviour
 
     void Update()
     {
-        Height = _timeCycle.CivilisationCounter * 2.5f;
+        Height = _timeCycle.CivilisationCounter;
         if (_isMovingCam)
         {
             transform.RotateAround(_center.position, Vector3.up, _inputActions.actions["CameraPosition"].ReadValue<float>() * _rotationSpeed * Time.deltaTime * 2f);
