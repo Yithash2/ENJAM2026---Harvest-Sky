@@ -27,22 +27,10 @@ public class UI : MonoBehaviour
     private float BuildMenuOppeningTimer;
     private bool BuildMenuOppened;
     private bool BuildMenuMoving = false;
-
-    [Serializable]
-    public struct Batiment
-    {
-        public int Ressources;
-        public Texture Image;
-        public GameObject prefab;
-    }
-
-    public Batiment[] batTypes;
-    
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        FirstBuildingPlacement.WidthBetweenBuildings = WidthBetweenBuildings;
         
         NextButton.onClick.AddListener(OnNextCivilisationButtonPressed);
         BuildMenuButton.onClick.AddListener(OnBuildButtonPressed);

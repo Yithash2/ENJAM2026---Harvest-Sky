@@ -8,10 +8,11 @@ public class Memory : MonoBehaviour
 
     void Start()
     {
-        DisplayText();
+        
     }
+    
     public void DisplayText()
     {
-        _ui.ShowLore(MemoriesManager.Instance.LoreTexts[_textKey]);
+        
     }
 }
