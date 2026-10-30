@@ -104,7 +104,8 @@ public class UI : MonoBehaviour
         while (BuildMenuOppeningTimer < BuildMenuOppeningTime)
         {
             BuildMenuOppeningTimer += Time.deltaTime;
-            BuildMenu.transform.position = Vector3.Lerp(BuildMenuClose, BuildMenuOpen, BuildMenuOppeningCurve.Evaluate(BuildMenuOppeningTimer/BuildMenuOppeningTime));
+            var v = Vector3.Lerp(BuildMenuClose, BuildMenuOpen, BuildMenuOppeningCurve.Evaluate(BuildMenuOppeningTimer / BuildMenuOppeningTime));
+            BuildMenu.transform.position = new Vector3(BuildMenu.transform.position.x, v.y, BuildMenu.transform.position.z);
             yield return null;
         }
         BuildMenuMoving = false;
@@ -116,7 +117,8 @@ public class UI : MonoBehaviour
         while (BuildMenuOppeningTimer < BuildMenuOppeningTime)
         {
             BuildMenuOppeningTimer += Time.deltaTime;
-            BuildMenu.transform.position = Vector3.Lerp(BuildMenuOpen, BuildMenuClose, BuildMenuOppeningCurve.Evaluate(BuildMenuOppeningTimer/BuildMenuOppeningTime));
+            var v = Vector3.Lerp(BuildMenuOpen, BuildMenuClose, BuildMenuOppeningCurve.Evaluate(BuildMenuOppeningTimer / BuildMenuOppeningTime));
+            BuildMenu.transform.position = new Vector3(BuildMenu.transform.position.x, v.y, BuildMenu.transform.position.z);
             yield return null;
         }
         BuildMenuMoving = false;
