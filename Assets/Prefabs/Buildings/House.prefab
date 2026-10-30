@@ -47,9 +47,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Placements.PlacementObject
   Placed: 1
   collider: {fileID: 2255932754611425492}
+  _resourcesNeeded: 30
   layerPlaced: 0
   IsRuined: 0
   BadSupport: 0
+  child: {fileID: 5566647038202874779}
   ruined: {fileID: 781705325872287790, guid: 37cb196a711e6e84291a7a513878aac9, type: 3}
 --- !u!1001 &3759074379877617901
 PrefabInstance:
@@ -116,5 +118,10 @@ BoxCollider:
 --- !u!4 &4475891550350519572 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 736168793363987961, guid: 933c542afb24d72458845781cbb85e43, type: 3}
+  m_PrefabInstance: {fileID: 3759074379877617901}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5566647038202874779 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8748903939752106870, guid: 933c542afb24d72458845781cbb85e43, type: 3}
   m_PrefabInstance: {fileID: 3759074379877617901}
   m_PrefabAsset: {fileID: 0}

@@ -1100,18 +1100,6 @@ PrefabInstance:
       propertyPath: playerInput
       value: 
       objectReference: {fileID: 1734722566}
-    - target: {fileID: 4704066171421814204, guid: 95f46e7681a7dac21aa8c61cf509d164, type: 3}
-      propertyPath: batTypes.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4704066171421814204, guid: 95f46e7681a7dac21aa8c61cf509d164, type: 3}
-      propertyPath: batTypes.Array.data[0].prefab
-      value: 
-      objectReference: {fileID: 502587341858284374, guid: c0575cb0f7c9f154093975f03ec37f13, type: 3}
-    - target: {fileID: 4704066171421814204, guid: 95f46e7681a7dac21aa8c61cf509d164, type: 3}
-      propertyPath: batTypes.Array.data[1].prefab
-      value: 
-      objectReference: {fileID: 6396768463434305378, guid: 01fc6cec3f83a6449afb4d18abcc18d8, type: 3}
     - target: {fileID: 5607149022484911663, guid: 95f46e7681a7dac21aa8c61cf509d164, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -1191,18 +1179,6 @@ PrefabInstance:
     - target: {fileID: 5607149022484911663, guid: 95f46e7681a7dac21aa8c61cf509d164, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7021981378857051483, guid: 95f46e7681a7dac21aa8c61cf509d164, type: 3}
-      propertyPath: m_Animations.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7021981378857051483, guid: 95f46e7681a7dac21aa8c61cf509d164, type: 3}
-      propertyPath: 'm_Animations.Array.data[0]'
-      value: 
-      objectReference: {fileID: 7400000, guid: 41e95b91304be154d8bca8c4c0f4675d, type: 2}
-    - target: {fileID: 8352899132702095425, guid: 95f46e7681a7dac21aa8c61cf509d164, type: 3}
-      propertyPath: m_margin.z
-      value: -154.25406
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

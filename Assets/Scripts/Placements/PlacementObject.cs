@@ -8,8 +8,9 @@ namespace Placements
     public class PlacementObject : MonoBehaviour
     {
         public bool Placed;
-        
+
         public BoxCollider collider;
+        [SerializeField] private int _resourcesNeeded;
 
         public int layerPlaced;
         public bool IsRuined = false;
@@ -71,12 +72,14 @@ namespace Placements
         
         public void Place()
         {
+            Debug.Log("Place");
             bool hasBeenPlaced = PlacementManager.Instance.grid.PlaceObject(this);
             if (hasBeenPlaced)
             {
                 Placed = true;
                 PlaceSupportBeams(collider.bounds.min, collider.bounds.max);
                 SoundManager.Instance.PlaceBuildingSound();
+                ResourceManager.Instance.UseResources(_resourcesNeeded);
             }
         }
 
