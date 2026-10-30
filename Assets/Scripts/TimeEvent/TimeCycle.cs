@@ -14,6 +14,7 @@ public class TimeCycle : MonoBehaviour
     [SerializeField] private int DayForCivilisationCycle = 3;
     [SerializeField] public TimeState timeState = TimeState.Play;
     [SerializeField] public float FastForwardSpeed = 2.0f;
+    [SerializeField] private AudioClip _fastForwardClip;
     
     public static TimeCycle Instance{
         get;
@@ -67,6 +68,7 @@ public class TimeCycle : MonoBehaviour
 
     public IEnumerator FastForward()
     {
+        SoundManager.Instance.PlaySFX(_fastForwardClip);
         Animator.SetTrigger("Play");
 
         yield return new WaitForSeconds(3);

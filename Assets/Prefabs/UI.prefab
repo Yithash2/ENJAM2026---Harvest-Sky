@@ -457,6 +457,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   Ressources: 0
   prefab: {fileID: 6396768463434305378, guid: 01fc6cec3f83a6449afb4d18abcc18d8, type: 3}
+  _button: {fileID: 0}
 --- !u!114 &2252208997491725250
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1202,6 +1203,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   Ressources: 40
   prefab: {fileID: 6396768463434305378, guid: 01fc6cec3f83a6449afb4d18abcc18d8, type: 3}
+  _button: {fileID: 5808858141542847731}
 --- !u!114 &5808858141542847731
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1695,6 +1697,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   Ressources: 30
   prefab: {fileID: 502587341858284374, guid: c0575cb0f7c9f154093975f03ec37f13, type: 3}
+  _button: {fileID: 8453816019358683180}
 --- !u!114 &8453816019358683180
 MonoBehaviour:
   m_ObjectHideFlags: 0
