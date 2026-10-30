@@ -5,6 +5,8 @@ public class SoundManager : MonoBehaviour
 {
     [SerializeField] private AudioSource _source;
     [SerializeField] private AudioClip[] _placeBuildingSounds;
+    [SerializeField] private AudioClip _loreReadSound;
+    [SerializeField] private AudioClip _buildButton;
 
     public static SoundManager Instance;
 
@@ -26,5 +28,12 @@ public class SoundManager : MonoBehaviour
     {
         PlaySFX(_placeBuildingSounds[UnityEngine.Random.Range(0, 3)]);
     }
-
+    public void LoreSound()
+    {
+        PlaySFX(_loreReadSound);
+    }
+    public void BuildButtonSound()
+    {
+        PlaySFX(_buildButton);
+    }
 }

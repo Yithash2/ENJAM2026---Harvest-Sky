@@ -47,6 +47,7 @@ public class LoreBlock : MonoBehaviour
         var b = Physics.Raycast(r, out RaycastHit hit);
         if (b && hit.collider.gameObject == transform.gameObject)
         {
+            SoundManager.Instance.LoreSound();
             print(MemoriesManager.Instance.LoreTexts[key]);
             UI.ShowLore(MemoriesManager.Instance.LoreTexts[key]);
         }

@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 472bf6acd59046ef88cc720085b584e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Placements.PlacementObject
-  Placed: 1
+  Placed: 0
   collider: {fileID: 2255932754611425492}
   _resourcesNeeded: 30
   layerPlaced: 0

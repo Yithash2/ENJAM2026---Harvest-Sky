@@ -339,3 +339,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SoundManager
   _source: {fileID: 4468336272236514261}
+  _placeBuildingSounds: []
+  _loreReadSound: {fileID: 8300000, guid: 7b812ea6c766bec458908a0c56f3724b, type: 3}
+  _buildButton: {fileID: 8300000, guid: 043d481491e719a42b872a0bcf794120, type: 3}

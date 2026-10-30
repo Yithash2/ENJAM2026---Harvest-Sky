@@ -24,7 +24,8 @@ public class BatButton : MonoBehaviour
             PlacementManager.Instance.CurrentObjectInHand = null;
         }
         var go = Instantiate(prefab);
-        PlacementManager.Instance.CurrentObjectInHand = go.GetComponent<PlacementObject>();;
+        PlacementManager.Instance.CurrentObjectInHand = go.GetComponent<PlacementObject>(); ;
+        SoundManager.Instance.BuildButtonSound();
     }
 
     public void Delete()

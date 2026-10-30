@@ -48,5 +48,8 @@ MonoBehaviour:
   DayForCivilisationCycle: 3
   timeState: 1
   FastForwardSpeed: 2
+  _fastForwardClip: {fileID: 8300000, guid: c1555051e605e36458a09ae16be4f84d, type: 3}
   DayCycleTimer: 0
+  CivilisationCounter: 0
   dtime: 0
+  Animator: {fileID: 0}
