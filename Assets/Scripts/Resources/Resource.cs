@@ -1,8 +1,11 @@
 using System;
 using System.Collections;
 using System.Resources;
+using Placements;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Resource : MonoBehaviour
 {
@@ -15,9 +18,20 @@ public class Resource : MonoBehaviour
     [SerializeField] private Animator _animator;
     [SerializeField] private TMP_Text _text;
     [SerializeField] private AudioClip[] _clips;
+    private PlayerInput _input;
 
+    private void OnEnable()
+    {
+        _input = FindAnyObjectByType<PlayerInput>();
+        _input.actions["MouseClick"].performed += OnClick;
+    }
 
-    public void OnClick()
+    private void OnDisable()
+    {
+        _input.actions["MouseClick"].performed -= OnClick;
+    }
+
+    public void Interact()
     {
         int resourcesGiven = UnityEngine.Random.Range(1, 4) * 10;
         _text.text = "+" + resourcesGiven.ToString();
@@ -38,7 +52,20 @@ public class Resource : MonoBehaviour
         if (_test)
         {
             _test = false;
-            OnClick();
+            Interact();
+        }
+    }
+
+    void OnClick(InputAction.CallbackContext context)
+    {
+        Ray ray = Camera.main.ScreenPointToRay(_input.actions["MousePos"].ReadValue<Vector2>()); // Input.mousePosition
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, 100))
+        {
+            if(hit.collider == GetComponent<BoxCollider>())
+            {
+                Interact();
+            }
         }
     }
 

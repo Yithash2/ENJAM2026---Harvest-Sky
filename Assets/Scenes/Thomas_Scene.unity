@@ -1375,7 +1375,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4853776287462574b82b742689e52387, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Memory
-  _displayText: {fileID: 1765461550}
+  _ui: {fileID: 0}
   _textKey: test2
 --- !u!1001 &2001090957
 PrefabInstance:
