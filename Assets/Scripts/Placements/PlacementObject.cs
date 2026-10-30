@@ -83,6 +83,11 @@ namespace Placements
             }
         }
 
+        public void InitialPlace()
+        {
+            
+        }
+
         private void PlaceSupportBeams(Vector3 min, Vector3 max)
         {
             float y = min.y;

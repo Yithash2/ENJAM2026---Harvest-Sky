@@ -61,7 +61,7 @@ namespace Placements
              for (int j = minIndex.y; j <= maxIndex.y; j++)
              {
                  
-                 if (_grid[i, j].Occupied)//Si l'espace est occuper
+                 if (_grid[i, j].Occupied && !_grid[i,j].Blocked)//Si l'espace est occuper
                  {
                      
                      if(_grid[i, j].Objects[^1].IsRuined)
@@ -143,13 +143,7 @@ namespace Placements
                  {
                      valid.Add(new Tuple<Vector3,Node>(v3, _grid[i,j]));
                  }
-
-                 j++;
-                 if (j >= size.y)
-                 {
-                     j = 0;
-                     i++;
-                 }
+                 
              }
 
              if (valid.Count == 0)
@@ -176,8 +170,7 @@ namespace Placements
              
              b=b||Physics.Raycast(position, new Vector3(0, Mathf.Sin(Mathf.PI/6f), -Mathf.Cos(Mathf.PI/6f)), 30, PlacementManager.Instance.PlaceLayer.value);
              Debug.DrawRay(position,new Vector3(0, Mathf.Sin(Mathf.PI/6f), -Mathf.Cos(Mathf.PI/6f)));
-
-             Debug.Break();
+             
              return b;
          }
 
@@ -185,8 +178,13 @@ namespace Placements
          public void SpawnRelik()
          {
              var r = FindRdmNodeInView();
-             
-             Instantiate(prefab, r.Item1, Quaternion.identity);
+             var gr = WorldToGridIndex(r.Item1);
+             var v = GridToWorld(gr.x, gr.y);
+             var v3 = new Vector3(v.x, 14f, v.y);
+             Physics.Raycast(v3,Vector3.down,out var info, 20000f,
+                 PlacementManager.Instance.PlaceLayer.value);
+             v3.y = info.point.y;
+             Instantiate(prefab, v3, Quaternion.identity);
              r.Item2.Blocked = true;
          }
          

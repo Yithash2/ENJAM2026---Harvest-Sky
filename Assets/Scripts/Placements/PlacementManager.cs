@@ -70,7 +70,7 @@ namespace Placements
             
             Ray ray = Camera.main.ScreenPointToRay(MousePos);
                 
-            if(Physics.Raycast(ray, out var hit, 30, layerGrid.value))
+            if(Physics.Raycast(ray, out var hit, 3000, layerGrid.value))
             {
                 var indexs = grid.WorldToGridIndex(hit.point);
                 var gridCoord = grid.GridToWorld(indexs.x, indexs.y);

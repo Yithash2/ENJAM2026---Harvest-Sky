@@ -58,7 +58,7 @@ Material:
     - _wave_length: 2.46
     - _wave_strg: 6.83
     m_Colors:
-    - _Color: {r: 1, g: 0.83137256, b: 0.6392157, a: 1}
-    - _Color_1: {r: 0.8509804, g: 0.55416834, b: 0.4078431, a: 1}
+    - _Color: {r: 0.85490197, g: 0.6862745, b: 1, a: 0}
+    - _Color_1: {r: 0.41929245, g: 0.37890345, b: 0.82641506, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
