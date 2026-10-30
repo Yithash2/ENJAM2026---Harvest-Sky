@@ -15,10 +15,12 @@ public class CameraManager : MonoBehaviour
 
     private bool _isMovingCam;
     private float _minHeight;
+    private TimeCycle _timeCycle;
     
 
     private void OnEnable()
     {
+        _timeCycle = FindAnyObjectByType<TimeCycle>();
         //_inputActions.actions["MoveCam"].started += OnStartHoldCamera();
         _inputActions.actions["MoveCam"].started += context => _isMovingCam = true;
         _inputActions.actions["MoveCam"].performed += context => _isMovingCam = true;
@@ -40,6 +42,7 @@ public class CameraManager : MonoBehaviour
 
     void Update()
     {
+        Height = _timeCycle.CivilisationCounter * 2.5f;
         if (_isMovingCam)
         {
             transform.RotateAround(_center.position, Vector3.up, _inputActions.actions["CameraPosition"].ReadValue<float>() * _rotationSpeed * Time.deltaTime * 2f);

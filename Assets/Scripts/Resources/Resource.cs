@@ -18,6 +18,7 @@ public class Resource : MonoBehaviour
     [SerializeField] private Animator _animator;
     [SerializeField] private TMP_Text _text;
     [SerializeField] private AudioClip[] _clips;
+    private bool _canInteract = true;
     private PlayerInput _input;
 
     private void OnEnable()
@@ -29,16 +30,21 @@ public class Resource : MonoBehaviour
     private void OnDisable()
     {
         _input.actions["MouseClick"].performed -= OnClick;
+        _input = null;
     }
 
     public void Interact()
     {
-        PlaySound();
-        int resourcesGiven = UnityEngine.Random.Range(1, 4) * 10;
-        _text.text = "+" + resourcesGiven.ToString();
-        ResourceManager.Instance.AddResources(resourcesGiven, ID);
-        _animator.SetTrigger("Click");
-        StartCoroutine(DestroyObject());
+        if (_canInteract)
+        {
+            _canInteract = false;
+            PlaySound();
+            int resourcesGiven = UnityEngine.Random.Range(1, 4) * 10;
+            _text.text = "+" + resourcesGiven.ToString();
+            ResourceManager.Instance.AddResources(resourcesGiven, ID);
+            _animator.SetTrigger("Click");
+            StartCoroutine(DestroyObject());
+        }
     }
 
     private IEnumerator DestroyObject()
