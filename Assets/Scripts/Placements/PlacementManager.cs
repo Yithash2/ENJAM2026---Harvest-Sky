@@ -25,7 +25,7 @@ namespace Placements
 
         public SupportBeam supportBeam;
 
-        private PlacementObject CurrentObjectInHand;
+        public PlacementObject CurrentObjectInHand;
 
         private void OnEnable()
         {
@@ -43,6 +43,16 @@ namespace Placements
             }
         }
 
+        public void CurrentCivToRest()
+        {
+            foreach (var build in BuildingsInCiv)
+            {
+                build.GetRuined();
+            }
+
+            BuildingsInCiv = new List<PlacementObject>();
+        }
+
         public PlacementGrid grid;
 
         private void FixedUpdate()
@@ -55,18 +65,18 @@ namespace Placements
             {
                 var indexs = grid.WorldToGridIndex(hit.point);
                 var gridCoord = grid.GridToWorld(indexs.x, indexs.y);
-                transform.position = new Vector3(gridCoord.x, 12f, gridCoord.y);
+                CurrentObjectInHand.transform.position = new Vector3(gridCoord.x, 12f, gridCoord.y);
                 int layer = grid.ValidObjectDirectPlacement(CurrentObjectInHand, out List<Node> unused, out var _);
 
-                Physics.Raycast(transform.position,Vector3.down,out var info, 20000f,
+                Physics.Raycast(CurrentObjectInHand.transform.position,Vector3.down,out var info, 20000f,
                     PlaceLayer.value);
                 if (layer < 0)
                 {
-                    transform.position = new Vector3(gridCoord.x, info.point.y + 3f, gridCoord.y);
+                    CurrentObjectInHand.transform.position = new Vector3(gridCoord.x, info.point.y + 3f, gridCoord.y);
                 }
                 else
                 {
-                    transform.position = new Vector3(gridCoord.x, info.point.y, gridCoord.y);
+                    CurrentObjectInHand.transform.position = new Vector3(gridCoord.x, info.point.y, gridCoord.y);
 
                     if (Clicked)
                     {
@@ -87,17 +97,26 @@ namespace Placements
 
             Instance = this;
         }
-        
+
+        private void OnValidate()
+        {
+            if (supportBeam.Prefab)
+            {
+                supportBeam.mesh = supportBeam.Prefab.GetComponentInChildren<MeshRenderer>();
+            }
+        }
     }
     
     [Serializable]
     public struct SupportBeam
     {
         public GameObject Prefab;
+        public MeshRenderer mesh;
 
         public void ChangeMaterial(Material MatBase)
         {
-            Prefab.GetComponentInChildren<MeshRenderer>().material = MatBase;
+            if (!mesh) Prefab.GetComponentInChildren<MeshRenderer>();
+            mesh.material = MatBase;
         }
     }
 }

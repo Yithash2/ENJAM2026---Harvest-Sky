@@ -29,7 +29,7 @@ namespace Placements
             IsRuined = true;
             DestroyImmediate(child, true);
             child = go;
-
+            child.layer = PlacementManager.Instance.PlaceLayer.value;
             foreach (var bea in Beams)
             {
                 bea.GetComponentInChildren<MeshRenderer>().material = PlacementManager.Instance.MatRuin;
@@ -57,6 +57,7 @@ namespace Placements
         {
             collider = collider?? GetComponent<BoxCollider>();
             child = transform.GetChild(0).gameObject;
+            Beams = new List<GameObject>();
         }
 
         private void FixedUpdate()
@@ -105,7 +106,12 @@ namespace Placements
                 }
                 beamA.transform.localScale = new Vector3(beamA.transform.localScale.x-0.1f, ray.distance,
                     beamA.transform.localScale.z-0.1f);
+                
+                Beams.Add(beamA);
+                
                 beamA.transform.SetParent(transform);
+                
+               
             }
             else
             {

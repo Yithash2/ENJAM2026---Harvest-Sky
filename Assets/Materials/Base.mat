@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Shader Graphs_Test1 1
+  m_Name: Base
   m_Shader: {fileID: -6465566751694194690, guid: 7c62a5275724dec46a123d2c7c5664f2, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -58,7 +58,7 @@ Material:
     - _wave_length: 2.46
     - _wave_strg: 6.83
     m_Colors:
-    - _Color: {r: 0.27450982, g: 0.2627451, b: 0.49411765, a: 1}
-    - _Color_1: {r: 0.17404711, g: 0.16820933, b: 0.2830189, a: 1}
+    - _Color: {r: 0.85490197, g: 0.7764706, b: 0.49019608, a: 1}
+    - _Color_1: {r: 0.97735846, g: 0.9269934, b: 0.7431612, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

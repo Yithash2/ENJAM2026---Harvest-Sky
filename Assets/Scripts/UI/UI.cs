@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Timers;
 using TMPro;
@@ -15,7 +16,7 @@ public class UI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI LoreText;
     [SerializeField] private Image LorePanel;
     [SerializeField] private AddBuildingPlacement FirstBuildingPlacement;
-    [SerializeField] private Canvas BuildMenu;
+    [SerializeField] private GameObject BuildMenu;
     [SerializeField] private int WidthBetweenBuildings = 50;
     [SerializeField] private PlayerInput playerInput;
 
@@ -26,6 +27,16 @@ public class UI : MonoBehaviour
     private float BuildMenuOppeningTimer;
     private bool BuildMenuOppened;
     private bool BuildMenuMoving = false;
+
+    [Serializable]
+    public struct Batiment
+    {
+        public int Ressources;
+        public Texture Image;
+        public GameObject prefab;
+    }
+
+    public Batiment[] batTypes;
     
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -52,6 +63,8 @@ public class UI : MonoBehaviour
     
     public void OnBuildButtonPressed()
     {
+        print("Je build");
+        
         BuildMenuOppeningTimer = 0f;
         if (BuildMenuMoving) return;
         print("Button pressed");
@@ -71,8 +84,8 @@ public class UI : MonoBehaviour
     public void ShowLore(string lore)
     {
         LoreText.text = lore;
-        LoreText.color = new Color(LoreText.color.r, LoreText.color.g, LoreText.color.b, 1);
-        LorePanel.color = new Color(LorePanel.color.r, LorePanel.color.g, LorePanel.color.b, 1);
+        LoreText.color = new Color(LoreText.color.r, LoreText.color.g, LoreText.color.b, 255);
+        LorePanel.color = new Color(LorePanel.color.r, LorePanel.color.g, LorePanel.color.b, 204);
         playerInput.actions["MouseClick"].started += _ => HideLore();
     }
 
@@ -88,7 +101,7 @@ public class UI : MonoBehaviour
         while (BuildMenuOppeningTimer < BuildMenuOppeningTime)
         {
             BuildMenuOppeningTimer += Time.deltaTime;
-            BuildMenu.transform.localPosition = Vector3.Lerp(BuildMenuClose, BuildMenuOpen, BuildMenuOppeningCurve.Evaluate(BuildMenuOppeningTimer/BuildMenuOppeningTime));
+            BuildMenu.transform.position = Vector3.Lerp(BuildMenuClose, BuildMenuOpen, BuildMenuOppeningCurve.Evaluate(BuildMenuOppeningTimer/BuildMenuOppeningTime));
             yield return null;
         }
         BuildMenuMoving = false;
@@ -100,7 +113,7 @@ public class UI : MonoBehaviour
         while (BuildMenuOppeningTimer < BuildMenuOppeningTime)
         {
             BuildMenuOppeningTimer += Time.deltaTime;
-            BuildMenu.transform.localPosition = Vector3.Lerp(BuildMenuOpen, BuildMenuClose, BuildMenuOppeningCurve.Evaluate(BuildMenuOppeningTimer/BuildMenuOppeningTime));
+            BuildMenu.transform.position = Vector3.Lerp(BuildMenuOpen, BuildMenuClose, BuildMenuOppeningCurve.Evaluate(BuildMenuOppeningTimer/BuildMenuOppeningTime));
             yield return null;
         }
         BuildMenuMoving = false;
