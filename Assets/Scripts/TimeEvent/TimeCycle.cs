@@ -13,9 +13,8 @@ public class TimeCycle : MonoBehaviour
     [SerializeField] public float FastForwardSpeed = 2.0f;
 
     public float DayCycleTimer = 0.0f;
-    private int CivilisationCycleDayCounter = 0;
     private int DayCounter = 0;
-    private int CivilisationCounter = 0;
+    public int CivilisationCounter = 0;
     public float dtime = 0.0f;
 
     #endregion
@@ -40,17 +39,8 @@ public class TimeCycle : MonoBehaviour
         {
             OnDayFullCycle?.Invoke();
             DayCounter++;
-            CivilisationCycleDayCounter++;
             DayCycleTimer = 0.0f;   
             OnDayNewCycle?.Invoke();
-        }
-
-        if (CivilisationCycleDayCounter >= DayForCivilisationCycle)
-        {
-            OnCivilisationFullCycle?.Invoke();
-            CivilisationCounter++;
-            CivilisationCycleDayCounter = 0;
-            OnCivilisationNewCycle?.Invoke();
         }
     }
 
