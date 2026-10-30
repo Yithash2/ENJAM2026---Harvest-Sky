@@ -131,6 +131,10 @@ MonoBehaviour:
   _timeToWait: 3
   _animator: {fileID: 7529374700755335433}
   _text: {fileID: 193585877441017543}
+  _clips:
+  - {fileID: 8300000, guid: 38cc4e362c1bb4b4f86d68b27e1e5a42, type: 3}
+  - {fileID: 8300000, guid: 9074f818ab8f4c3439ac322571633b74, type: 3}
+  - {fileID: 8300000, guid: 3822ea4c3572c0b4a8dd68c86a763531, type: 3}
 --- !u!1 &5282190613573732821
 GameObject:
   m_ObjectHideFlags: 0
