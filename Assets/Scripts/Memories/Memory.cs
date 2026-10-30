@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Memory : MonoBehaviour
 {
-    [SerializeField] private TMP_Text _displayText;
+    [SerializeField] private UI _ui;
     [SerializeField] private string _textKey;
 
     void Start()
@@ -12,6 +12,6 @@ public class Memory : MonoBehaviour
     }
     public void DisplayText()
     {
-        _displayText.text = MemoriesManager.Instance.LoreTexts[_textKey];
+        _ui.ShowLore(MemoriesManager.Instance.LoreTexts[_textKey]);
     }
 }
