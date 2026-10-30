@@ -4,6 +4,7 @@ using UnityEngine;
 public class SoundManager : MonoBehaviour
 {
     [SerializeField] private AudioSource _source;
+    [SerializeField] private AudioClip[] _placeBuildingSounds;
 
     public static SoundManager Instance;
 
@@ -20,4 +21,10 @@ public class SoundManager : MonoBehaviour
     {
         _source.PlayOneShot(clip);
     }
+
+    public void PlaceBuildingSound()
+    {
+        PlaySFX(_placeBuildingSounds[UnityEngine.Random.Range(0, 3)]);
+    }
+
 }

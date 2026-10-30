@@ -33,6 +33,7 @@ public class Resource : MonoBehaviour
 
     public void Interact()
     {
+        PlaySound();
         int resourcesGiven = UnityEngine.Random.Range(1, 4) * 10;
         _text.text = "+" + resourcesGiven.ToString();
         ResourceManager.Instance.AddResources(resourcesGiven, ID);

@@ -75,6 +75,7 @@ namespace Placements
             {
                 Placed = true;
                 PlaceSupportBeams(collider.bounds.min, collider.bounds.max);
+                SoundManager.Instance.PlaceBuildingSound();
             }
         }
 
