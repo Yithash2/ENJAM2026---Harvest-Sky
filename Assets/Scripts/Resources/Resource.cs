@@ -6,37 +6,33 @@ using UnityEngine;
 public class Resource : MonoBehaviour
 {
     [SerializeField] private bool _test;
+    public int ID;
 
     [Header("Data")]
-    public bool HasResources;
-    public int ResourcesGiven;
     [SerializeField] private float _timeToWait;
     [Header("References")]
-    [SerializeField] private GameObject _resourceDisplay;
+    [SerializeField] private Animator _animator;
     [SerializeField] private TMP_Text _text;
 
-    void Start()
-    {
-        _text.text = ResourcesGiven.ToString();
-        HasResources = true;
-    }
-
-    private IEnumerator GatherResources()
-    {
-        yield return new WaitForSeconds(_timeToWait);
-        HasResources = true;
-        _resourceDisplay.SetActive(true);
-    }
+    // private IEnumerator GatherResources()
+    // {
+    //     yield return new WaitForSeconds(_timeToWait);
+    //     HasResources = true;
+    // }
 
     public void OnClick()
     {
-        if (HasResources)
-        {
-            ResourceManager.Instance.AddResources(ResourcesGiven);
-            HasResources = false;
-            _resourceDisplay.SetActive(false);
-            StartCoroutine(GatherResources());
-        }
+        int resourcesGiven = Random.Range(1, 4) * 10;
+        _text.text = "+" + resourcesGiven.ToString();
+        ResourceManager.Instance.AddResources(resourcesGiven, ID);
+        _animator.SetTrigger("Click");
+        StartCoroutine(DestroyObject());
+    }
+
+    private IEnumerator DestroyObject()
+    {
+        yield return new WaitForSeconds(1.3f);
+        Destroy(gameObject);
     }
 
     // To remove
@@ -44,7 +40,6 @@ public class Resource : MonoBehaviour
     {
         if (_test)
         {
-            print("Click !");
             _test = false;
             OnClick();
         }

@@ -1,6 +1,9 @@
 using System.Collections;
+using System.Timers;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.Timeline;
 using UnityEngine.UI;
 
 public class UI : MonoBehaviour
@@ -13,16 +16,16 @@ public class UI : MonoBehaviour
     [SerializeField] private Image LorePanel;
     [SerializeField] private AddBuildingPlacement FirstBuildingPlacement;
     [SerializeField] private Canvas BuildMenu;
-    [SerializeField] private GameObject[] BuildingTypes;
     [SerializeField] private int WidthBetweenBuildings = 50;
+    [SerializeField] private PlayerInput playerInput;
 
     [SerializeField] private Vector3 BuildMenuOpen;
     [SerializeField] private Vector3 BuildMenuClose;
     [SerializeField] private AnimationCurve BuildMenuOppeningCurve;
     [SerializeField] private float BuildMenuOppeningTime;
     private float BuildMenuOppeningTimer;
-    private bool BuildMenuOppening;
-    private Coroutine BuildMenuCoroutine;
+    private bool BuildMenuOppened;
+    private bool BuildMenuMoving = false;
     
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -30,15 +33,10 @@ public class UI : MonoBehaviour
     {
         FirstBuildingPlacement.WidthBetweenBuildings = WidthBetweenBuildings;
         
-        foreach (var buildingType in BuildingTypes) {
-            FirstBuildingPlacement.Add(buildingType);
-        }
-
         NextButton.onClick.AddListener(OnNextCivilisationButtonPressed);
-        NextButton.onClick.AddListener(OnBuildButtonPressed);
+        BuildMenuButton.onClick.AddListener(OnBuildButtonPressed);
         
-        LoreText.color = new Color(LoreText.color.r, LoreText.color.g, LoreText.color.b, 0);
-        LorePanel.color = new Color(LorePanel.color.r, LorePanel.color.g, LorePanel.color.b, 0);
+        HideLore();
     }
 
     // Update is called once per frame
@@ -54,30 +52,57 @@ public class UI : MonoBehaviour
     
     public void OnBuildButtonPressed()
     {
-        print("Oppening Panel !");
-        BuildMenuOppening = !BuildMenuOppening;
-        BuildMenuCoroutine = StartCoroutine(OpenBuildPanel());
-    }
-
-    public IEnumerator OpenBuildPanel()
-    {
-        Vector3 newPos;
-        if (BuildMenuOppening)
+        BuildMenuOppeningTimer = 0f;
+        if (BuildMenuMoving) return;
+        print("Button pressed");
+        if (BuildMenuOppened)
         {
-            BuildMenuOppeningTimer += Time.deltaTime;
-            newPos = Vector3.Lerp(BuildMenuClose, BuildMenuOpen, BuildMenuOppeningCurve.Evaluate(BuildMenuOppeningTimer/BuildMenuOppeningTime));
-            
+            BuildMenuOppened = false;
+            StartCoroutine(CloseBuildPanel());
         }
         else
         {
-            BuildMenuOppeningTimer -= Time.deltaTime;
-            newPos = Vector3.Lerp(BuildMenuClose, BuildMenuOpen, BuildMenuOppeningCurve.Evaluate(BuildMenuOppeningTimer/BuildMenuOppeningTime));
+            BuildMenuOppened = true;
+            StartCoroutine(OpenBuildPanel());
         }
         
-        BuildMenu.transform.position = newPos;
-        if (BuildMenuOppeningTimer > BuildMenuOppeningTime || BuildMenuOppeningTimer < 0)
-            StopCoroutine(BuildMenuCoroutine);
-        else
-            yield break;
+    }
+
+    public void ShowLore(string lore)
+    {
+        LoreText.text = lore;
+        LoreText.color = new Color(LoreText.color.r, LoreText.color.g, LoreText.color.b, 1);
+        LorePanel.color = new Color(LorePanel.color.r, LorePanel.color.g, LorePanel.color.b, 1);
+        playerInput.actions["MouseClick"].started += _ => HideLore();
+    }
+
+    public void HideLore()
+    {
+        LoreText.color = new Color(LoreText.color.r, LoreText.color.g, LoreText.color.b, 0);
+        LorePanel.color = new Color(LorePanel.color.r, LorePanel.color.g, LorePanel.color.b, 0);
+    }
+    
+    public IEnumerator OpenBuildPanel()
+    {
+        BuildMenuMoving = true;
+        while (BuildMenuOppeningTimer < BuildMenuOppeningTime)
+        {
+            BuildMenuOppeningTimer += Time.deltaTime;
+            BuildMenu.transform.localPosition = Vector3.Lerp(BuildMenuClose, BuildMenuOpen, BuildMenuOppeningCurve.Evaluate(BuildMenuOppeningTimer/BuildMenuOppeningTime));
+            yield return null;
+        }
+        BuildMenuMoving = false;
+    }
+    
+    public IEnumerator CloseBuildPanel()
+    {
+        BuildMenuMoving = true;
+        while (BuildMenuOppeningTimer < BuildMenuOppeningTime)
+        {
+            BuildMenuOppeningTimer += Time.deltaTime;
+            BuildMenu.transform.localPosition = Vector3.Lerp(BuildMenuOpen, BuildMenuClose, BuildMenuOppeningCurve.Evaluate(BuildMenuOppeningTimer/BuildMenuOppeningTime));
+            yield return null;
+        }
+        BuildMenuMoving = false;
     }
 }

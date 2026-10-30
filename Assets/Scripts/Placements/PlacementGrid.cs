@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 
 namespace Placements
@@ -14,7 +15,7 @@ namespace Placements
 
          [SerializeField]private Node[,] _grid;
 
-         private List<PlacementObject> ObjectsOnGrid;
+         public GameObject prefab;
 
          public bool PlaceObject(PlacementObject obj)
          {
@@ -31,16 +32,13 @@ namespace Placements
                  obj.BadSupport = true;
              
              obj.layerPlaced = layer;
-            
+             obj.gameObject.layer = PlacementManager.Instance.PlaceLayer.value;
              
-             obj.PlacesUsed = placeUsed;
              foreach (var node in placeUsed)
              {
-				print("fbbkbkbkbkbk");
                  node.Objects.Add(obj);
-                 print(node.Objects.Count);
              }
-             ObjectsOnGrid.Add(obj);
+             PlacementManager.Instance.BuildingsInCiv.Add(obj);
              return true;
          }
 
@@ -57,7 +55,6 @@ namespace Placements
                  max.y,
                  max.z - 1f * SnapAmount
              ), true);
-
              numberOfOccupiedNodeHitOnTheSameLayer = 0;
              int layer = 0;
              
@@ -68,17 +65,15 @@ namespace Placements
                  if (_grid[i, j].Occupied)//Si l'espace est occuper
                  {
                      
-                     if(_grid[i, j].Objects[^1].SupportsOtherObjects)
+                     if(_grid[i, j].Objects[^1].IsRuined)
                          if (_grid[i, j].Objects[^1].LayerOnTop() > layer)
                          {
-                             print($"{new Vector2Int(i,j)} : {_grid[i, j].Objects[^1].LayerOnTop()}");
                              layer = _grid[i, j].Objects[^1].LayerOnTop();
                              numberOfOccupiedNodeHitOnTheSameLayer = 1;
                              placesUsed = new List<Node>();
                          }
                          else if (_grid[i, j].Objects[^1].LayerOnTop() == layer)
                          {
-                             print($"{new Vector2Int(i,j)} : {numberOfOccupiedNodeHitOnTheSameLayer}");
                              numberOfOccupiedNodeHitOnTheSameLayer++;
                              placesUsed.Add(_grid[i, j]);
                          }
@@ -88,6 +83,8 @@ namespace Placements
                      numberOfOccupiedNodeHitOnTheSameLayer++;
                      placesUsed.Add(_grid[i, j]);
                  }
+                 
+                 Debug.DrawRay(GridToWorld(i,j), Vector3.up);
              }
          
              if (numberOfOccupiedNodeHitOnTheSameLayer >= obj.TotalNbrOfNode/4f)
@@ -108,11 +105,6 @@ namespace Placements
              return centerOfFirst + new Vector2(i, j) * SnapAmount;
          }
 
-         public float LayerToWorld(int layer)
-         {
-             return transform.position.y + (SnapAmount * layer);
-         }
-
          public Vector2Int WorldToGridIndex(Vector3 worldPos, bool correct = false)
          {
              int i = Mathf.Abs(Mathf.FloorToInt((worldPos.x - Bound1.x) / SnapAmount));
@@ -120,8 +112,8 @@ namespace Placements
 
              if (correct)
              {
-                 i = 0 > i ? 0 : i > size.x ? size.x : i;
-                 j = 0 > j ? 0 : j > size.y ? size.y : j;
+                 i = 0 > i ? 0 : i >= size.x ? size.x-1 : i;
+                 j = 0 > j ? 0 : j >= size.y ? size.y-1 : j;
              }
              
              return new Vector2Int(i, j);
@@ -136,6 +128,68 @@ namespace Placements
          {
              return 0 < x && size.x > x && 0 < y && size.y > y;
          }
+
+         public Tuple<Vector3,Node> FindRdmNodeInView() // Trouve une case au hasard qui regarde le ciel
+         {
+             List<Tuple<Vector3,Node>> valid = new List<Tuple<Vector3,Node>>();
+             
+             for (int i = 0; i < size.x;i++)
+             for (int j = 0; j < size.y; j++)
+             {
+                 if(_grid[i,j].Blocked || (_grid[i,j].Occupied && !_grid[i,j].Objects[^1].IsRuined)) continue;
+                
+                 var v = GridToWorld(i, j);
+                 var v3 = new Vector3(v.x, _grid[i,j].Occupied ? _grid[i,j].Objects[^1].transform.position.y+_grid[i,j].Objects[^1].child.transform.localScale.y : -14.5f, v.y);
+                 if (CheckNodeExteriorView(_grid[i,j], v3))
+                 {
+                     valid.Add(new Tuple<Vector3,Node>(v3, _grid[i,j]));
+                 }
+
+                 j++;
+                 if (j >= size.y)
+                 {
+                     j = 0;
+                     i++;
+                 }
+             }
+
+             if (valid.Count == 0)
+             {
+                 return new Tuple<Vector3, Node>(Vector3.zero, new Node());
+             }
+            
+             print(valid.Count);
+             int rdm = Random.Range(0, valid.Count - 1);
+
+             return valid[rdm];
+         }
+
+         public bool CheckNodeExteriorView(Node node, Vector3 position)
+         {
+             bool b = Physics.Raycast(position, new Vector3(Mathf.Cos(Mathf.PI/6f), Mathf.Sin(Mathf.PI/6f), 0), 30, PlacementManager.Instance.PlaceLayer.value);
+             Debug.DrawRay(position,new Vector3(Mathf.Cos(Mathf.PI/6f), Mathf.Sin(Mathf.PI/6f), 0));
+             
+             b = b||Physics.Raycast(position, new Vector3(0, Mathf.Sin(Mathf.PI/6f), Mathf.Cos(Mathf.PI/6f)), 30, PlacementManager.Instance.PlaceLayer.value);
+             Debug.DrawRay(position,new Vector3(0, Mathf.Sin(Mathf.PI/6f), Mathf.Cos(Mathf.PI/6f)));
+             
+             b=b||Physics.Raycast(position, new Vector3(-Mathf.Cos(Mathf.PI/6f), Mathf.Sin(Mathf.PI/6f), 0), 30, PlacementManager.Instance.PlaceLayer.value);
+             Debug.DrawRay(position,new Vector3(-Mathf.Cos(Mathf.PI/6f), Mathf.Sin(Mathf.PI/6f), 0));
+             
+             b=b||Physics.Raycast(position, new Vector3(0, Mathf.Sin(Mathf.PI/6f), -Mathf.Cos(Mathf.PI/6f)), 30, PlacementManager.Instance.PlaceLayer.value);
+             Debug.DrawRay(position,new Vector3(0, Mathf.Sin(Mathf.PI/6f), -Mathf.Cos(Mathf.PI/6f)));
+
+             Debug.Break();
+             return b;
+         }
+
+         [ContextMenu("Spawn Relik")]
+         public void SpawnRelik()
+         {
+             var r = FindRdmNodeInView();
+             
+             Instantiate(prefab, r.Item1, Quaternion.identity);
+             r.Item2.Blocked = true;
+         }
          
          private void OnValidate()
          {
@@ -145,7 +199,7 @@ namespace Placements
              for(int h = 0; h<size.x; h++)
                  for(int w = 0; w<size.y; w++)
                      _grid[h,w] = new Node();
-             ObjectsOnGrid = new List<PlacementObject>();
+             
          }
 
          private void OnDrawGizmos()

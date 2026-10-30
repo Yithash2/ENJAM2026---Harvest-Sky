@@ -3,18 +3,40 @@ using UnityEngine;
 
 namespace Placements
 {
-    using System.Collections.Generic;
     
+    using System.Collections.Generic;
     public class PlacementObject : MonoBehaviour
     {
         public bool Placed;
         
         public BoxCollider collider;
-        public List<Node> PlacesUsed;
 
         public int layerPlaced;
-        public bool SupportsOtherObjects = true;
+        public bool IsRuined = false;
         public bool BadSupport;
+
+        private List<GameObject> Beams;
+
+        #region Generation
+
+        public GameObject child;
+        [SerializeField] private GameObject ruined;
+        [ContextMenu("GetRuined")]
+        public void GetRuined()
+        {
+            var go = Instantiate(ruined, transform);
+            collider = go.GetComponent<BoxCollider>();
+            IsRuined = true;
+            DestroyImmediate(child, true);
+            child = go;
+
+            foreach (var bea in Beams)
+            {
+                bea.GetComponentInChildren<MeshRenderer>().material = PlacementManager.Instance.MatRuin;
+            }
+        }
+
+        #endregion
         
         public int TotalNbrOfNode { get; private set; }
 
@@ -26,7 +48,6 @@ namespace Placements
             
             TotalNbrOfNode = Mathf.RoundToInt(collider.size.x*transform.localScale.x / _grid.SnapAmount) *
                              Mathf.RoundToInt(collider.size.z*transform.localScale.z / _grid.SnapAmount);
-            print(gameObject.name + TotalNbrOfNode);
             if(Placed)
                 Place();
 
@@ -34,8 +55,8 @@ namespace Placements
 
         private void OnValidate()
         {
-            collider = GetComponent<BoxCollider>();
-            
+            collider = collider?? GetComponent<BoxCollider>();
+            child = transform.GetChild(0).gameObject;
         }
 
         private void FixedUpdate()
@@ -44,39 +65,8 @@ namespace Placements
             {
                 
             }
-            else
-            {   
-                Ray ray = Camera.main.ScreenPointToRay(PlacementManager.Instance.MousePos);
-                
-                if(Physics.Raycast(ray, out var hit, 30, PlacementManager.Instance.PlaceLayer.value))
-                {
-                    var indexs = _grid.WorldToGridIndex(hit.point);
-                    var gridCoord = _grid.GridToWorld(indexs.x, indexs.y);
-                    transform.position = new Vector3(gridCoord.x, 12f, gridCoord.y);
-                    int layer = PlacementManager.Instance.grid.ValidObjectDirectPlacement(this, out List<Node> unused, out var _);
-
-                    if (layer < 0)
-                    {
-                        
-                    }
-                    else
-                    {
-
-                        transform.position = new Vector3(gridCoord.x, _grid.LayerToWorld(layer), gridCoord.y);
-
-                        if (PlacementManager.Instance.Clicked)
-                        {
-                            Place();
-                        } 
-                    }
-                    
-                }
-                
-            }
         }
-
-
-        [ContextMenu("Place")]
+        
         public void Place()
         {
             bool hasBeenPlaced = PlacementManager.Instance.grid.PlaceObject(this);
@@ -84,12 +74,7 @@ namespace Placements
             {
                 Placed = true;
                 PlaceSupportBeams(collider.bounds.min, collider.bounds.max);
-                if(BadSupport)
-                    print($"{gameObject.name} has been placed correctly. But im hanging");
-                else
-                    print($"{gameObject.name} has been placed correctly.");
-            }else 
-                print($"{gameObject.name} hasn't been place correctly");
+            }
         }
 
         private void PlaceSupportBeams(Vector3 min, Vector3 max)
@@ -107,18 +92,20 @@ namespace Placements
             var prefab = PlacementManager.Instance.supportBeam;
             prefab.ChangeMaterial(PlacementManager.Instance.MatDetail);
             var beamA= Instantiate(prefab.Prefab, pos, Quaternion.identity);
+            beamA.transform.SetParent(transform);
             
             var hit = Physics.Raycast(beamA.transform.position, Vector3.down,out RaycastHit ray, 400000f ,PlacementManager.Instance.PlaceLayer.value);
             
             if (hit)
             {
-                if (ray.distance <= 0.051f)
+                if (ray.distance <= 0.0051f)
                 {
                     DestroyImmediate(beamA);
                     return;
                 }
                 beamA.transform.localScale = new Vector3(beamA.transform.localScale.x-0.1f, ray.distance,
                     beamA.transform.localScale.z-0.1f);
+                beamA.transform.SetParent(transform);
             }
             else
             {

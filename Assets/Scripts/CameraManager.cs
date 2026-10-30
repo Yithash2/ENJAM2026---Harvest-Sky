@@ -11,10 +11,11 @@ public class CameraManager : MonoBehaviour
 
     [Header("Scene")]
     [SerializeField] private Transform _center;
-    [SerializeField] private float _height;
+    public float Height;
 
     private bool _isMovingCam;
     private float _minHeight;
+    
 
     private void OnEnable()
     {
@@ -45,7 +46,7 @@ public class CameraManager : MonoBehaviour
         }
 
         float scroll = _inputActions.actions["Scroll"].ReadValue<float>();
-        if (scroll < 0f && transform.position.y >= _minHeight || scroll > 0f && transform.position.y <= _minHeight + _height)
+        if (scroll < 0f && transform.position.y >= _minHeight || scroll > 0f && transform.position.y <= _minHeight + Height)
         {
             transform.Translate(new Vector3(0f, scroll * _scrollMultiplier * Time.deltaTime * 2f, 0f));
         }
