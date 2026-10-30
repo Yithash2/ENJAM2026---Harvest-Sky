@@ -32,7 +32,6 @@ namespace Placements
                  obj.BadSupport = true;
              
              obj.layerPlaced = layer;
-             obj.gameObject.layer = PlacementManager.Instance.PlaceLayer.value;
              
              foreach (var node in placeUsed)
              {

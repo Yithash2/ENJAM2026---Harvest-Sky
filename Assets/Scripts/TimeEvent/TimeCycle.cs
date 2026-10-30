@@ -21,6 +21,19 @@ public class TimeCycle : MonoBehaviour
     public int CivilisationCounter = 0;
     public float dtime = 0.0f;
 
+    [SerializeField] private Material BaseMat;
+    [SerializeField] private Material DetailMat;
+
+    [SerializeField] private ColorAndHint[] BaseColors;
+    [SerializeField] private ColorAndHint[] DetailColors;
+
+    [Serializable]
+    struct ColorAndHint
+    {
+        public Color Item1;
+        public Color Item2;
+    }
+
     public Animator Animator;
     
     #endregion
@@ -29,6 +42,11 @@ public class TimeCycle : MonoBehaviour
     void Start()
     {
         timeForDayCycle *= 100;
+        
+        BaseMat.SetColor("_Color",BaseColors[CivilisationCounter].Item1);
+        BaseMat.SetColor("_Color_1",BaseColors[CivilisationCounter].Item2);
+        DetailMat.SetColor("_Color", DetailColors[CivilisationCounter].Item1);
+        DetailMat.SetColor("_Color_1", DetailColors[CivilisationCounter].Item2);
     }
     
     void Update()
@@ -69,6 +87,14 @@ public class TimeCycle : MonoBehaviour
         yield return new WaitForSeconds(3);
         
         PlacementManager.Instance.CurrentCivToRest();
+
+        if (CivilisationCounter >= BaseColors.Length) CivilisationCounter = BaseColors.Length - 1;
+        
+        BaseMat.SetColor("_Color",BaseColors[CivilisationCounter].Item1);
+        BaseMat.SetColor("_Color_1",BaseColors[CivilisationCounter].Item2);
+        DetailMat.SetColor("_Color", DetailColors[CivilisationCounter].Item1);
+        DetailMat.SetColor("_Color_1", DetailColors[CivilisationCounter].Item2);
+
     }
     
     #region Events

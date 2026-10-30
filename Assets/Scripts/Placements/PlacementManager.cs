@@ -18,6 +18,8 @@ namespace Placements
         [SerializeField] private PlayerInput _inputActions;
         public Vector2 MousePos => _inputActions.actions["MousePos"].ReadValue<Vector2>();
         public LayerMask PlaceLayer;
+        public LayerMask layerBat;
+        public LayerMask layerGrid;
         public bool Clicked { get; private set; }
         public bool RightClicked { get; private set; }
         public List<PlacementObject> BuildingsInCiv;
@@ -68,7 +70,7 @@ namespace Placements
             
             Ray ray = Camera.main.ScreenPointToRay(MousePos);
                 
-            if(Physics.Raycast(ray, out var hit, 30, PlaceLayer.value))
+            if(Physics.Raycast(ray, out var hit, 30, layerGrid.value))
             {
                 var indexs = grid.WorldToGridIndex(hit.point);
                 var gridCoord = grid.GridToWorld(indexs.x, indexs.y);

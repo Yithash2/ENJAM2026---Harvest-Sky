@@ -30,7 +30,7 @@ namespace Placements
             IsRuined = true;
             DestroyImmediate(child, true);
             child = go;
-            child.layer = PlacementManager.Instance.PlaceLayer.value;
+
             foreach (var bea in Beams)
             {
                 bea.GetComponentInChildren<MeshRenderer>().material = PlacementManager.Instance.MatRuin;
@@ -98,9 +98,9 @@ namespace Placements
             var prefab = PlacementManager.Instance.supportBeam;
             prefab.ChangeMaterial(PlacementManager.Instance.MatDetail);
             var beamA= Instantiate(prefab.Prefab, pos, Quaternion.identity);
-            beamA.transform.SetParent(transform);
             
             var hit = Physics.Raycast(beamA.transform.position, Vector3.down,out RaycastHit ray, 400000f ,PlacementManager.Instance.PlaceLayer.value);
+            beamA.transform.SetParent(transform);
             
             if (hit)
             {
