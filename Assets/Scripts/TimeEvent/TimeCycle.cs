@@ -1,6 +1,9 @@
 using System;
-using System.Reflection;
+using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
+using UnityEngine;
+using Placements;
 using UnityEngine.Serialization;
 
 public class TimeCycle : MonoBehaviour
@@ -17,6 +20,8 @@ public class TimeCycle : MonoBehaviour
     public int CivilisationCounter = 0;
     public float dtime = 0.0f;
 
+    public Animator Animator;
+    
     #endregion
     
     
@@ -51,7 +56,19 @@ public class TimeCycle : MonoBehaviour
     
     public void ToggleFastForward()
     {
-        timeState = timeState == TimeState.FastForward ? TimeState.Play : TimeState.FastForward;
+        CivilisationCounter++;
+        StartCoroutine(FastForward());
+    }
+
+    public IEnumerator FastForward()
+    {
+        Animator.SetTrigger("Play");
+
+        yield return new WaitForSeconds(3);
+        
+        PlacementManager.Instance.CurrentCivToRest();
+
+        
     }
     
     #region Events

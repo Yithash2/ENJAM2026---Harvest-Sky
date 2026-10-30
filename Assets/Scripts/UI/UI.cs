@@ -41,7 +41,7 @@ public class UI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        RessourceText.text = $": {ResourceManager.Instance.Resources}";
     }
 
     public void OnNextCivilisationButtonPressed()

@@ -30,13 +30,14 @@ namespace Placements
 
         public PlacementObject CurrentObjectInHand;
 
+        public int CurrentCiv = 0;
+
         private void OnEnable()
         {
             BuildingsInCiv = new List<PlacementObject>();
             _inputActions.actions["MouseClick"].started += context => Clicked = true;
             _inputActions.actions["MouseClick"].canceled += context => Clicked = false;
             _inputActions.actions["MouseClock"].started += context => RightClicked = true;
-            _inputActions.actions["MouseClock"].canceled += context => RightClicked = false;
         }
         
         private void OnDisable()
@@ -46,7 +47,6 @@ namespace Placements
                 _inputActions.actions["MouseClick"].started -= context => Clicked = true;
                 _inputActions.actions["MouseClick"].canceled -= context => Clicked = false;
                 _inputActions.actions["MouseClock"].started += context => RightClicked = true;
-                _inputActions.actions["MouseClock"].canceled += context => RightClicked = false;
             }
         }
 
@@ -74,8 +74,12 @@ namespace Placements
                 var gridCoord = grid.GridToWorld(indexs.x, indexs.y);
                 CurrentObjectInHand.transform.position = new Vector3(gridCoord.x, 12f, gridCoord.y);
                 int layer = grid.ValidObjectDirectPlacement(CurrentObjectInHand, out List<Node> unused, out var _);
-                
-                if(RightClicked) CurrentObjectInHand.transform.Rotate(Vector3.up, 90);
+
+                if (RightClicked)
+                {
+                    CurrentObjectInHand.transform.Rotate(Vector3.up, 90);
+                    RightClicked = false;
+                }
 
                 Physics.Raycast(CurrentObjectInHand.transform.position,Vector3.down,out var info, 20000f,
                     PlaceLayer.value);

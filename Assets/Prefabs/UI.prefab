@@ -563,7 +563,7 @@ GameObject:
   - component: {fileID: 2054910996722924471}
   - component: {fileID: 5460534339401247857}
   - component: {fileID: 6339998398550528184}
-  - component: {fileID: 7021981378857051483}
+  - component: {fileID: 1564074078143392992}
   m_Layer: 5
   m_Name: CivilizationPanel
   m_TagString: Untagged
@@ -629,22 +629,28 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!111 &7021981378857051483
-Animation:
+--- !u!95 &1564074078143392992
+Animator:
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4138467342358506593}
   m_Enabled: 1
-  serializedVersion: 4
-  m_Animation: {fileID: 7400000, guid: 41e95b91304be154d8bca8c4c0f4675d, type: 2}
-  m_Animations: []
-  m_WrapMode: 0
-  m_PlayAutomatically: 0
-  m_AnimatePhysics: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a09d59b191e6c5e49ab780124ffa8b3d, type: 2}
+  m_CullingMode: 0
   m_UpdateMode: 0
-  m_CullingType: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &4678313578838261487
 GameObject:
   m_ObjectHideFlags: 0

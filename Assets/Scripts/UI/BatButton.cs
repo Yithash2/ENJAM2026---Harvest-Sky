@@ -27,6 +27,7 @@ public class BatButton : MonoBehaviour
         {
             Destroy(PlacementManager.Instance.CurrentObjectInHand.gameObject);
             PlacementManager.Instance.CurrentObjectInHand = null;
+            
         }
     }
 }
