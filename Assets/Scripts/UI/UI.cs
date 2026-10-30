@@ -19,6 +19,11 @@ public class UI : MonoBehaviour
     [SerializeField] private GameObject BuildMenu;
     [SerializeField] private int WidthBetweenBuildings = 50;
     [SerializeField] private PlayerInput playerInput;
+    
+    public static UI Instance{
+        get;
+        protected set;
+    }
 
     [SerializeField] private Vector3 BuildMenuOpen;
     [SerializeField] private Vector3 BuildMenuClose;
@@ -36,6 +41,16 @@ public class UI : MonoBehaviour
         BuildMenuButton.onClick.AddListener(OnBuildButtonPressed);
         
         HideLore();
+    }
+    
+    private void Awake()
+    {
+        if (Instance != this && Instance !=  null)
+        {
+            DestroyImmediate(this.gameObject);
+        }
+
+        Instance = this;
     }
 
     // Update is called once per frame
