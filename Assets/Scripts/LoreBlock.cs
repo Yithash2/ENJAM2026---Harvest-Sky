@@ -8,15 +8,14 @@ using Random = UnityEngine.Random;
 
 public class LoreBlock : MonoBehaviour
 {
-    [SerializeField] private UI UI;
-    [SerializeField] private MemoriesManager MemoriesManager;
-    [SerializeField] private int layer;
+    private int layer;
     private string key;
     private PlayerInput _input;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        layer = TimeCycle.Instance.CivilisationCounter;
         string[] keys = new[]
         {
             "L1-1", "L1-2", "L1-3", "L2-1", "L2-2", "L2-3", "L2-4", "L3-1", "L3-2", "L3-3", "L4-1", "L4-2", "L4-3", "L4-4", "L5-1", "L5-2", "L5-3", "L5-4"
@@ -43,14 +42,17 @@ public class LoreBlock : MonoBehaviour
 
     public void OnClick(InputAction.CallbackContext ctx)
     {
-        var r = Camera.main.ScreenPointToRay(PlacementManager.Instance.MousePos);
-        var b = Physics.Raycast(r, out RaycastHit hit);
-        if (b && hit.collider.gameObject == transform.gameObject)
+        var r = Camera.main?.ScreenPointToRay(PlacementManager.Instance.MousePos);
+        if (r != null)
         {
-            SoundManager.Instance.LoreSound();
-            print(MemoriesManager.Instance.LoreTexts[key]);
-            UI.ShowLore(MemoriesManager.Instance.LoreTexts[key]);
+            Ray nr = r ?? new Ray();
+            var b = Physics.Raycast(nr, out RaycastHit hit);
+            if (b && hit.collider.gameObject == transform.gameObject)
+            {
+                UI.Instance.ShowLore(MemoriesManager.Instance.LoreTexts[key]);
+            }
         }
+        
     }
     
     private void OnEnable()
