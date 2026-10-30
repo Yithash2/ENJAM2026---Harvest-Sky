@@ -44,6 +44,7 @@ namespace Placements
 
         private void Start()
         {
+            Beams = new List<GameObject>();
             _grid = PlacementManager.Instance.grid;
             
             TotalNbrOfNode = Mathf.RoundToInt(collider.size.x*transform.localScale.x / _grid.SnapAmount) *

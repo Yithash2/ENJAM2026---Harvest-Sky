@@ -2,6 +2,9 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections.Generic;
+using System.Numerics;
+using Vector2 = UnityEngine.Vector2;
+using Vector3 = UnityEngine.Vector3;
 
 namespace Placements
 {
@@ -16,7 +19,7 @@ namespace Placements
         public Vector2 MousePos => _inputActions.actions["MousePos"].ReadValue<Vector2>();
         public LayerMask PlaceLayer;
         public bool Clicked { get; private set; }
-        
+        public bool RightClicked { get; private set; }
         public List<PlacementObject> BuildingsInCiv;
 
         public Material MatBase;
@@ -32,6 +35,8 @@ namespace Placements
             BuildingsInCiv = new List<PlacementObject>();
             _inputActions.actions["MouseClick"].started += context => Clicked = true;
             _inputActions.actions["MouseClick"].canceled += context => Clicked = false;
+            _inputActions.actions["MouseClock"].started += context => RightClicked = true;
+            _inputActions.actions["MouseClock"].canceled += context => RightClicked = false;
         }
         
         private void OnDisable()
@@ -40,6 +45,8 @@ namespace Placements
             {
                 _inputActions.actions["MouseClick"].started -= context => Clicked = true;
                 _inputActions.actions["MouseClick"].canceled -= context => Clicked = false;
+                _inputActions.actions["MouseClock"].started += context => RightClicked = true;
+                _inputActions.actions["MouseClock"].canceled += context => RightClicked = false;
             }
         }
 
@@ -67,6 +74,8 @@ namespace Placements
                 var gridCoord = grid.GridToWorld(indexs.x, indexs.y);
                 CurrentObjectInHand.transform.position = new Vector3(gridCoord.x, 12f, gridCoord.y);
                 int layer = grid.ValidObjectDirectPlacement(CurrentObjectInHand, out List<Node> unused, out var _);
+                
+                if(RightClicked) CurrentObjectInHand.transform.Rotate(Vector3.up, 90);
 
                 Physics.Raycast(CurrentObjectInHand.transform.position,Vector3.down,out var info, 20000f,
                     PlaceLayer.value);
