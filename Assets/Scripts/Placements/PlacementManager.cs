@@ -76,7 +76,9 @@ namespace Placements
                 var gridCoord = grid.GridToWorld(indexs.x, indexs.y);
                 CurrentObjectInHand.transform.position = new Vector3(gridCoord.x, 12f, gridCoord.y);
                 int layer = grid.ValidObjectDirectPlacement(CurrentObjectInHand, out List<Node> unused, out var _);
-
+                
+                print(CurrentObjectInHand.transform.position);
+                
                 if (RightClicked)
                 {
                     CurrentObjectInHand.transform.Rotate(Vector3.up, 90);

@@ -47,7 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Placements.PlacementObject
   Placed: 0
   collider: {fileID: 135369592776194584}
-  _resourcesNeeded: 30
+  _resourcesNeeded: 60
   layerPlaced: 0
   IsRuined: 0
   BadSupport: 0

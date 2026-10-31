@@ -17,6 +17,15 @@ namespace Placements
 
          public GameObject prefab;
 
+         private void Start()
+         {
+             size = WorldToGridIndex(new Vector3(Bound2.x,0,Bound2.y));
+             _grid = new Node[size.x,size.y];
+             for(int h = 0; h<size.x; h++)
+             for(int w = 0; w<size.y; w++)
+                 _grid[h,w] = new Node();
+         }
+
          public bool PlaceObject(PlacementObject obj)
          {
              if (!InBound(obj.transform.position))
@@ -191,11 +200,7 @@ namespace Placements
          private void OnValidate()
          {
 
-             size = WorldToGridIndex(new Vector3(Bound2.x,0,Bound2.y));
-             _grid = new Node[size.x,size.y];
-             for(int h = 0; h<size.x; h++)
-                 for(int w = 0; w<size.y; w++)
-                     _grid[h,w] = new Node();
+             
              
          }
 

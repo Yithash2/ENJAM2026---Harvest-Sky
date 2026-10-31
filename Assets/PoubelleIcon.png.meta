@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 032b93990b83a894eb7317bd48c320fc
+guid: dad190b606e41e24fa357127feb2a16a
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 6916243977149822674
-    second: "Capture d'\xE9cran 2026-10-30 111425_0"
+      213: 9215133925506585937
+    second: PoubelleIcon_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: "Capture d'\xE9cran 2026-10-30 111425_0"
+      name: PoubelleIcon_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 66
-        height: 62
+        width: 610
+        height: 610
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2d633fdd04f6bff50800000000000000
-      internalID: 6916243977149822674
+      spriteID: 155987b3b7bb2ef70800000000000000
+      internalID: 9215133925506585937
       vertices: []
       indices: 
       edges: []

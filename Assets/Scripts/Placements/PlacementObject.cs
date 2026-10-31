@@ -50,8 +50,8 @@ namespace Placements
             
             TotalNbrOfNode = Mathf.RoundToInt(collider.size.x*transform.localScale.x / _grid.SnapAmount) *
                              Mathf.RoundToInt(collider.size.z*transform.localScale.z / _grid.SnapAmount);
-            if(Placed)
-                Place();
+            if (Placed)
+                InitialPlace();
 
         }
 
@@ -85,7 +85,7 @@ namespace Placements
 
         public void InitialPlace()
         {
-            
+            bool hasBeenPlaced = PlacementManager.Instance.grid.PlaceObject(this);
         }
 
         private void PlaceSupportBeams(Vector3 min, Vector3 max)
