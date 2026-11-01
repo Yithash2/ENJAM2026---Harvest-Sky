@@ -3,7 +3,22 @@ guid: 58e21e2771bd9a34ba59ecaaaf14961e
 ModelImporter:
   serializedVersion: 24300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Leave2
+    second: {fileID: 2100000, guid: fe2ea0205bc87a84db4bc40d04f9d7ce, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Leaves
+    second: {fileID: 2100000, guid: 31c06da8ecfdfec47996d99a73d62725, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Tree
+    second: {fileID: 2100000, guid: 47c988388a85c4e4aa0d931f05bc3da2, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -92,7 +107,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 0.0025
+    globalScale: 0.25
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0

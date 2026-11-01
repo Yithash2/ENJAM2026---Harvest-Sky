@@ -66,11 +66,9 @@ public class UI : MonoBehaviour
     
     public void OnBuildButtonPressed()
     {
-        print("Je build");
         
         BuildMenuOppeningTimer = 0f;
         if (BuildMenuMoving) return;
-        print("Button pressed");
         if (BuildMenuOppened)
         {
             BuildMenuOppened = false;

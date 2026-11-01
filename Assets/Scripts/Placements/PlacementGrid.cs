@@ -17,7 +17,7 @@ namespace Placements
 
          public GameObject prefab;
 
-         private void Start()
+         private void Awake()
          {
              size = WorldToGridIndex(new Vector3(Bound2.x,0,Bound2.y));
              _grid = new Node[size.x,size.y];
@@ -159,8 +159,7 @@ namespace Placements
              {
                  return new Tuple<Vector3, Node>(Vector3.zero, new Node());
              }
-            
-             print(valid.Count);
+             
              int rdm = Random.Range(0, valid.Count - 1);
 
              return valid[rdm];
